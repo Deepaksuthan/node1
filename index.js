@@ -1,21 +1,31 @@
 const express = require("express")
 const app = express()
 app.use(express.json())
+const path = require("path");
 
-//current date and time
-const dt = Date.now();
-const date_obj = new Date(dt);
-const date = date_obj.getDate();
-const month = date_obj.getMonth() + 1;
-const year = date_obj.getFullYear();
-const time = date_obj.getTime();
-const fileName = year + "-" + month + "-" + date + "-" + time;
+const dirPath = path.join(__dirname, "timestamp");
+
 //content
-const timestamp = new Date().toISOString();
+const utc = new Date();
+
+//Current Date
+const date = utc.getDate();
+//Current Month
+const month = utc.getMonth()+1;
+//Current Year
+const year = utc.getFullYear();
+//Current Hours
+const hours = utc.getHours();
+//Current Minutes
+const min = utc.getMinutes();
+//Current Seconds
+const seconds = utc.getSeconds();
+const timestamp = `The Current timestamp is Date(${year}-${month}-${date}), Indian Standard Time(${hours}:${min}:${seconds})`;
+// new Date().toISOString();
 
 //file
 const fs = require("fs");
-fs.writeFile(`${fileName}.txt`, timestamp, function (err) { console.log("Success!!") });
+fs.writeFile(`${dirPath}.txt`, timestamp, function (err) { console.log("Success!!") });
 
 //read file
 let files = [];
@@ -27,3 +37,4 @@ app.get("/", (req, res) => {
 });
 
 app.listen(3000);
+
